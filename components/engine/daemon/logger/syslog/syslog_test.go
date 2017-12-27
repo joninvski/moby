@@ -60,3 +60,29 @@ func TestValidateLogOptEmpty(t *testing.T) {
 		t.Fatal("Failed to parse empty config", err)
 	}
 }
+
+func TestValidateLogOpt(t *testing.T) {
+	err := ValidateLogOpt(map[string]string{
+		"env":                    "http://127.0.0.1",
+		"env-regex":              "abc",
+		"labels":                 "labelA",
+		"syslog-address":         "udp://1.2.3.4:1111",
+		"syslog-facility":        "daemon",
+		"syslog-tls-ca-cert":     "/etc/ca-certificates/custom/ca.pem",
+		"syslog-tls-cert":        "/etc/ca-certificates/custom/cert.pem",
+		"syslog-tls-key":         "/etc/ca-certificates/custom/key.pem",
+		"syslog-tls-skip-verify": "true",
+		"tag":           "true",
+		"syslog-format": "rfc3164",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = ValidateLogOpt(map[string]string{
+		"not-supported-option": "a",
+	})
+	if err == nil {
+		t.Fatal("Expecting error on unsupported options")
+	}
+}

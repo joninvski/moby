@@ -19,4 +19,4 @@ TESTDIRS="${TESTDIRS:-"./..."}"
 exclude_paths="/vendor/|/integration"
 pkg_list=$(go list $TESTDIRS | grep -vE "($exclude_paths)")
 
-go test -cover "${BUILDFLAGS[@]}" $TESTFLAGS $pkg_list
+go test -cover "${BUILDFLAGS[@]}" $TESTFLAGS $pkg_list -coverprofile=c.out  

@@ -8,7 +8,6 @@ import (
 	"net"
 	"net/url"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
@@ -214,20 +213,7 @@ func ValidateLogOpt(cfg map[string]string) error {
 }
 
 func parseFacility(facility string) (syslog.Priority, error) {
-	if facility == "" {
-		return syslog.LOG_DAEMON, nil
-	}
-
-	if syslogFacility, valid := facilities[facility]; valid {
-		return syslogFacility, nil
-	}
-
-	fInt, err := strconv.Atoi(facility)
-	if err == nil && 0 <= fInt && fInt <= 23 {
-		return syslog.Priority(fInt << 3), nil
-	}
-
-	return syslog.Priority(0), errors.New("invalid syslog facility")
+	return syslog.LOG_DAEMON, nil
 }
 
 func parseTLSConfig(cfg map[string]string) (*tls.Config, error) {
